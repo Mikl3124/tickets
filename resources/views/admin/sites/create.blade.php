@@ -3,90 +3,80 @@
 
 <div class="card">
     <div class="card-header">
-        {{ trans('global.create') }} {{ trans('cruds.user.title_singular') }}
+        Création d'un nouveau site
     </div>
 
     <div class="card-body">
-        <form action="{{ route("admin.users.store") }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route("admin.sites.store") }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <div class="form-group {{ $errors->has('firstname') ? 'has-error' : '' }}">
-                <label for="firstname">Prénom *</label>
-                <input type="text" id="firstname" name="firstname" class="form-control" value="{{ old('firstname', isset($user) ? $user->name : '') }}" required>
-                @if($errors->has('firstname'))
+            <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
+                <label for="name">Nom du site *</label>
+                <input type="text" id="name" name="name" class="form-control" value="{{ old('name', isset($site) ? $site->name : '') }}" required>
+                @if($errors->has('name'))
                     <em class="invalid-feedback">
-                        {{ $errors->first('firstname') }}
+                        {{ $errors->first('name') }}
                     </em>
                 @endif
                 <p class="helper-block">
-                    Veuillez saisie le prénom
                 </p>
             </div>
-            <div class="form-group {{ $errors->has('lastname') ? 'has-error' : '' }}">
-              <label for="lastname">Prénom *</label>
-              <input type="text" id="lastname" name="lastname" class="form-control" value="{{ old('lastname', isset($user) ? $user->name : '') }}">
-              @if($errors->has('lastname'))
+            <div class="form-group {{ $errors->has('url') ? 'has-error' : '' }}">
+              <label for="url">URL</label>
+              <input type="url" id="url" name="url" class="form-control" value="{{ old('url', isset($site) ? $site->url : '') }}">
+              @if($errors->has('url'))
                   <em class="invalid-feedback">
-                      {{ $errors->first('lastname') }}
+                      {{ $errors->first('url') }}
                   </em>
               @endif
               <p class="helper-block">
-                  Veuillez saisie le nom
               </p>
             </div>
-            <div class="form-group {{ $errors->has('phone') ? 'has-error' : '' }}">
-              <label for="phone">Téléphone</label>
-              <input type="number" id="phone" name="phone" class="form-control" value="{{ old('phone', isset($user) ? $user->phone : '') }}">
-              @if($errors->has('phone'))
-                  <em class="invalid-feedback">
-                      {{ $errors->first('phone') }}
-                  </em>
-              @endif
-              <p class="helper-block">
-                  Veuillez saisir le prénom
-              </p>
-            </div>
-            <div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
-                <label for="email">{{ trans('cruds.user.fields.email') }}*</label>
-                <input type="email" id="email" name="email" class="form-control" value="{{ old('email', isset($user) ? $user->email : '') }}" required>
-                @if($errors->has('email'))
+            <div class="form-group {{ $errors->has('type') ? 'has-error' : '' }}">
+                <label for="type">Type de site</label>
+                <select name="type" id="type" class="form-control select2">
+                    <option value="vitrine">Vitrine</option>
+                    <option value="commerce">E-commerce</option>
+                    <option value="autre">Autre</option>
+                </select>
+                @if($errors->has('type'))
                     <em class="invalid-feedback">
-                        {{ $errors->first('email') }}
+                        {{ $errors->first('type') }}
                     </em>
                 @endif
                 <p class="helper-block">
-                    {{ trans('cruds.user.fields.email_helper') }}
                 </p>
             </div>
-            <div class="form-group {{ $errors->has('password') ? 'has-error' : '' }}">
-                <label for="password">{{ trans('cruds.user.fields.password') }}</label>
-                <input type="password" id="password" name="password" class="form-control" required>
-                @if($errors->has('password'))
-                    <em class="invalid-feedback">
-                        {{ $errors->first('password') }}
-                    </em>
-                @endif
-                <p class="helper-block">
-                    {{ trans('cruds.user.fields.password_helper') }}
-                </p>
-            </div>
-            <div class="form-group {{ $errors->has('roles') ? 'has-error' : '' }}">
-                <label for="roles">{{ trans('cruds.user.fields.roles') }}*
-                    <span class="btn btn-info btn-xs select-all">{{ trans('global.select_all') }}</span>
-                    <span class="btn btn-info btn-xs deselect-all">{{ trans('global.deselect_all') }}</span></label>
-                <select name="roles[]" id="roles" class="form-control select2" multiple="multiple" required>
-                    @foreach($roles as $id => $roles)
-                        <option value="{{ $id }}" {{ (in_array($id, old('roles', [])) || isset($user) && $user->roles->contains($id)) ? 'selected' : '' }}>{{ $roles }}</option>
+            <div class="form-group {{ $errors->has('users') ? 'has-error' : '' }}">
+                <label for="roles">Utilisateurs liés</label>
+                <select name="users[]" id="users" class="form-control select2" multiple="multiple">
+                    @foreach($users as $user)
+                        <option value="{{ $user->id }}" {{ (in_array($user->id, old('users', [])) || isset($user) && $user->sites->contains($user->id)) ? 'selected' : '' }}>{{ $user->lastname }} {{ $user->firstname }} </option>
                     @endforeach
                 </select>
-                @if($errors->has('roles'))
+                @if($errors->has('sites'))
                     <em class="invalid-feedback">
-                        {{ $errors->first('roles') }}
+                        {{ $errors->first('sites') }}
                     </em>
                 @endif
                 <p class="helper-block">
-                    {{ trans('cruds.user.fields.roles_helper') }}
+                    
                 </p>
             </div>
+            <div class="form-group {{ $errors->has('attachments') ? 'has-error' : '' }}">
+                <label for="attachments">Logo</label>
+                <div class="needsclick dropzone" id="attachments-dropzone">
+
+                </div>
+                @if($errors->has('attachments'))
+                    <em class="invalid-feedback">
+                        {{ $errors->first('attachments') }}
+                    </em>
+                @endif
+                <p class="helper-block">
+                    {{ trans('cruds.ticket.fields.attachments_helper') }}
+                </p>
+            </div>
+
             <div>
                 <input class="btn btn-danger" type="submit" value="{{ trans('global.save') }}">
             </div>
@@ -96,3 +86,63 @@
     </div>
 </div>
 @endsection
+
+@section('scripts')
+<script>
+    var uploadedAttachmentsMap = {}
+Dropzone.options.attachmentsDropzone = {
+    url: '{{ route('admin.tickets.storeMedia') }}',
+    maxFilesize: 2, // MB
+    addRemoveLinks: true,
+    headers: {
+      'X-CSRF-TOKEN': "{{ csrf_token() }}"
+    },
+    params: {
+      size: 2
+    },
+    success: function (file, response) {
+      $('form').append('<input type="hidden" name="attachments[]" value="' + response.name + '">')
+      uploadedAttachmentsMap[file.name] = response.name
+    },
+    removedfile: function (file) {
+      file.previewElement.remove()
+      var name = ''
+      if (typeof file.file_name !== 'undefined') {
+        name = file.file_name
+      } else {
+        name = uploadedAttachmentsMap[file.name]
+      }
+      $('form').find('input[name="attachments[]"][value="' + name + '"]').remove()
+    },
+    init: function () {
+@if(isset($site) && $site->attachments)
+          var files =
+            {!! json_encode($site->attachments) !!}
+              for (var i in files) {
+              var file = files[i]
+              this.options.addedfile.call(this, file)
+              file.previewElement.classList.add('dz-complete')
+              $('form').append('<input type="hidden" name="attachments[]" value="' + file.file_name + '">')
+            }
+@endif
+    },
+     error: function (file, response) {
+         if ($.type(response) === 'string') {
+             var message = response //dropzone sends it's own error messages in string
+         } else {
+             var message = response.errors.file
+         }
+         file.previewElement.classList.add('dz-error')
+         _ref = file.previewElement.querySelectorAll('[data-dz-errormessage]')
+         _results = []
+         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+             node = _ref[_i]
+             _results.push(node.textContent = message)
+         }
+
+         return _results
+     }
+}
+</script>
+@stop
+

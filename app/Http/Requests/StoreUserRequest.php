@@ -23,13 +23,13 @@ class StoreUserRequest extends FormRequest
                 'required',
             ],
             'lastname'    => [
-              '',
+                '',
             ],
             'phone'    => [
-              '',
+                '',
             ],
             'comments'    => [
-              '',
+                '',
             ],
             'email'    => [
                 'required',

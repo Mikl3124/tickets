@@ -16,6 +16,8 @@ class CreateSitesTable extends Migration
         Schema::create('sites', function (Blueprint $table) {
           $table->increments('id');
           $table->string('name');
+          $table->string('updated_at')->nullable();
+          $table->string('created_at')->nullable();
           $table->string('url')->nullable();
           $table->string('type')->nullable();
           $table->json('medias')->nullable();

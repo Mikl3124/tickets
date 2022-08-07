@@ -17,31 +17,7 @@ class User extends Authenticatable
 
     public $table = 'users';
 
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    protected $dates = [
-        'updated_at',
-        'created_at',
-        'deleted_at',
-        'email_verified_at',
-    ];
-
-    protected $fillable = [
-        'firstname',
-        'lastname',
-        'phone',
-        'comments',
-        'email',
-        'password',
-        'created_at',
-        'updated_at',
-        'deleted_at',
-        'remember_token',
-        'email_verified_at',
-    ];
+    protected $guarded = [];
 
     public function tickets()
     {
@@ -93,6 +69,11 @@ class User extends Authenticatable
     public function isClient()
     {
         return $this->roles->contains(3);
+    }
+
+    public function sites()
+    {
+        return $this->belongsToMany(Site::class);
     }
 
 

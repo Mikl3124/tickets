@@ -32,7 +32,15 @@
                         <th>
                           Contact
                         </th>
-
+                        <th>
+                          Contact
+                        </th>
+                        <th>
+                          Contact
+                        </th>
+                        <th>
+                          Type
+                        </th>
                         <th>
                             &nbsp;
                         </th>
@@ -45,10 +53,10 @@
 
                             </td>
                             <td>
-                                Colonne 1
+                                {{ $site->name }}
                             </td>
                             <td>
-                                Colonne 2
+                                <a href="{{ $site->url }}">{{ $site->url }}</a>
                             </td>
                             <td>
                               Colonne 3
@@ -60,32 +68,39 @@
                                 Colonne 5
                             </td>
                             <td>
-                                @foreach($user->roles as $key => $item)
-                                    <span class="badge badge-info">{{ $item->title }}</span>
-                                @endforeach
+                                @switch($site->type)
+                                    @case('vitrine')
+                                        <span class="badge badge-info">{{ $site->type }}</span>
+                                        @break
+                                    @case('commerce')
+                                        <span class="badge badge-warning">{{ $site->type }}</span>
+                                        @break
+                                    @default
+                                        <span class="badge badge-secondary">{{ $site->type }}</span>
+                                @endswitch
                             </td>
-                            {{-- <td>
+                            <td>
                                 @can('site_show')
-                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.users.show', $user->id) }}">
+                                    <a class="btn btn-xs btn-primary" href="{{ route('admin.sites.show', $site->id) }}">
                                         {{ trans('global.view') }}
                                     </a>
                                 @endcan
 
                                 @can('site_edit')
-                                    <a class="btn btn-xs btn-info" href="{{ route('admin.users.edit', $user->id) }}">
-                                        {{ trans('global.edit') }}
+                                    <a class="btn btn-xs btn-info" href="{{ route('admin.sites.edit', $site->id) }}">
+                                        Compléter
                                     </a>
                                 @endcan
 
                                 @can('site_delete')
-                                    <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
+                                    <form action="{{ route('admin.sites.destroy', $site->id) }}" method="POST" onsubmit="return confirm('{{ trans('global.areYouSure') }}');" style="display: inline-block;">
                                         <input type="hidden" name="_method" value="DELETE">
                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                         <input type="submit" class="btn btn-xs btn-danger" value="{{ trans('global.delete') }}">
                                     </form>
                                 @endcan
 
-                            </td> --}}
+                            </td>
 
                         </tr>
                     @endforeach
@@ -106,7 +121,7 @@
   let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
   let deleteButton = {
     text: deleteButtonTrans,
-    url: "{{ route('admin.users.massDestroy') }}",
+    url: "{{ route('admin.sites.massDestroy') }}",
     className: 'btn-danger',
     action: function (e, dt, node, config) {
       var ids = $.map(dt.rows({ selected: true }).nodes(), function (entry) {

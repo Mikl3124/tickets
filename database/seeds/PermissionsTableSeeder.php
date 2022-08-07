@@ -185,12 +185,24 @@ class PermissionsTableSeeder extends Seeder
                 'title' => 'dashboard_access',
             ],
             [
-              'id'    => '45',
+                'id'    => '45',
               'title' => 'site_access',
             ],
             [
-              'id'    => '46',
+                'id'    => '46',
               'title' => 'site_create',
+            ],
+            [
+                'id'    => '47',
+                'title' => 'site_show',
+            ],
+            [
+                'id'    => '48',
+                'title' => 'site_edit',
+            ],
+            [
+                'id'    => '49',
+                'title' => 'site_delete',
             ],
         ];
 

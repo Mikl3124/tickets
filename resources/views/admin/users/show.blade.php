@@ -3,7 +3,7 @@
 
 <div class="card">
     <div class="card-header">
-        Fiche de {{ $user->firstname }} {{ $user->firstname }}
+        Fiche de {{ $user->firstname }} {{ $user->lastname }}
     </div>
 
     <div class="card-body">
@@ -44,19 +44,21 @@
                     </tr>
                     <tr>
                         <th>
-                            {{ trans('cruds.user.fields.email_verified_at') }}
-                        </th>
-                        <td>
-                            {{ $user->email_verified_at }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
                             Roles
                         </th>
                         <td>
                             @foreach($user->roles as $id => $roles)
                                 <span class="label label-info label-many">{{ $roles->title }}</span>
+                            @endforeach
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Site(s)
+                        </th>
+                        <td>
+                            @foreach($user->sites as $site)
+                                <span class="label label-info label-many">{{ $site->name }}</span><br>
                             @endforeach
                         </td>
                     </tr>
@@ -70,7 +72,7 @@
                   </tr>
                 </tbody>
             </table>
-            <a style="margin-top:20px;" class="btn btn-default" href="{{ url()->previous() }}">
+            <a style="margin-top:20px;" class="btn btn-secondary" href="{{ url()->previous() }}">
                 Retour
             </a>
         </div>

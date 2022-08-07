@@ -12,4 +12,11 @@ class Site extends Model
     use SoftDeletes;
 
     public $table = 'sites';
+
+    protected $guarded = [];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }
