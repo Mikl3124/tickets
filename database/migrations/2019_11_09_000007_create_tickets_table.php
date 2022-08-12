@@ -12,7 +12,7 @@ class CreateTicketsTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->longText('content')->nullable();
-            $table->string('author_name')->nullable();
+            $table->unsignedInteger('categorie_id')->index()->references('id')->on('categories')->nullable();
             $table->unsignedInteger('author_id')->index()->references('id')->on('users')->nullable();
             $table->unsignedInteger('site_id')->index()->references('id')->on('sites')->nullable();
             $table->float('duration')->nullable();

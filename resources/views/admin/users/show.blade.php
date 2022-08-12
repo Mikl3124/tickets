@@ -72,9 +72,14 @@
                   </tr>
                 </tbody>
             </table>
-            <a style="margin-top:20px;" class="btn btn-secondary" href="{{ url()->previous() }}">
+            <div class="d-flex">
+              <a style="margin-top:20px;" class="btn btn-secondary mr-2" href="{{ url()->previous() }}">
                 Retour
-            </a>
+              </a>
+              <a style="margin-top:20px;" class="btn btn-primary mr-2"  href="{{ route('admin.users.edit', $user->id) }}">
+                Modifier
+              </a>
+            </div>
         </div>
 
         <nav class="mb-3">

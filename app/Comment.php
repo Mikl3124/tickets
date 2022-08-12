@@ -23,8 +23,7 @@ class Comment extends Model
         'created_at',
         'updated_at',
         'deleted_at',
-        'author_name',
-        'author_email',
+        'author_id',
         'comment_text',
     ];
 
@@ -37,4 +36,5 @@ class Comment extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
 }

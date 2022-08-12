@@ -30,7 +30,7 @@ class CommentsController extends Controller
 
         $tickets = Ticket::all()->pluck('title', 'id')->prepend(trans('global.pleaseSelect'), '');
 
-        $users = User::all()->pluck('name', 'id')->prepend(trans('global.pleaseSelect'), '');
+        $users = User::all();
 
         return view('admin.comments.create', compact('tickets', 'users'));
     }

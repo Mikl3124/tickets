@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'site_title' => 'Support Artefact',
+    'site_title' => 'Support Technique',
 ];

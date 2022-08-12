@@ -3,14 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Ticket;
-use App\Http\Controllers\Traits\MediaUploadingTrait;
-use App\Notifications\CommentEmailNotification;
-use Illuminate\Support\Facades\Notification;
+use App\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\CommentEmailNotification;
+use App\Http\Controllers\Traits\MediaUploadingTrait;
+use Illuminate\Support\Facades\Auth;
 
 class TicketController extends Controller
 {
     use MediaUploadingTrait;
+
+    public function __construct()
+    {
+      $this->middleware('auth');
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -19,8 +26,14 @@ class TicketController extends Controller
      */
     public function create()
     {
-        return view('tickets.create');
+      $user = Auth::user();
+      $categories = Category::all();
+      $user->load('sites');
+
+      return view('tickets.create', compact('categories', 'user'));
     }
+
+
 
     /**
      * Store a newly created resource in storage.
@@ -30,17 +43,18 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
+
+      $user = Auth::user();
+
         $request->validate([
             'title'         => 'required',
             'content'       => 'required',
-            'author_name'   => 'required',
-            'author_email'  => 'required|email',
         ]);
 
         $request->request->add([
-            'category_id'   => 1,
             'status_id'     => 1,
-            'priority_id'   => 1
+            'priority_id'   => 1,
+            'author_id'     => $user->id,
         ]);
 
         $ticket = Ticket::create($request->all());

@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('content')
 <div class="card">
-    
+
     <div class="card-header">
         {{ trans('global.edit') }} {{ trans('cruds.user.title_singular') }}
     </div>
@@ -76,7 +76,7 @@
                     <span class="btn btn-info btn-xs deselect-all">{{ trans('global.deselect_all') }}</span></label>
                 <select name="roles[]" id="roles" class="form-control select2" multiple="multiple" required>
                     @foreach($roles as $role)
-                        <option value="{{ $role->id }}" {{ (in_array($role->id, old('roles', [])) || isset($user) && $user->roles->contains($role->id)) ? 'selected' : '' }}> {{$role->title }}</option>
+                      <option value="{{ $role->id }}" {{ (in_array($role->id, old('roles', [])) || isset($user) && $user->roles->contains($role->id)) ? 'selected' : '' }}> {{$role->title }}</option>
                     @endforeach
 
                 </select>
@@ -91,7 +91,7 @@
             </div>
             <div class="form-group {{ $errors->has('comments') ? 'has-error' : '' }}">
                 <label for="comments">Commentaire</label>
-                <textarea class="form-control" name="comments" id="comments" rows="2"></textarea>
+                <textarea class="form-control" name="comments" id="comments" rows="2">{{ $user->comments }}</textarea>
                 @if($errors->has('comments'))
                     <em class="invalid-feedback">
                         {{ $errors->first('comments') }}
@@ -101,10 +101,13 @@
 
                 </p>
             </div>
-            
-            <div>
-                <input class="btn btn-danger" type="submit" value="Enregistrer">
-            </div>
+
+              <div>
+                  <input class="btn btn-danger mx-2" type="submit" value="Enregistrer">
+              </div>
+
+
+
         </form>
 
 

@@ -31,10 +31,12 @@ class UsersController extends Controller
         return view('admin.users.create', compact('roles'));
     }
 
-    public function store(StoreUserRequest $request)
+    public function store(Request $request)
     {
+
         $user = User::create($request->all());
         $user->roles()->sync($request->input('roles', []));
+
 
         return redirect()->route('admin.users.index');
     }
@@ -43,14 +45,14 @@ class UsersController extends Controller
     {
         abort_if(Gate::denies('user_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $roles = Role::all()->pluck('title', 'id');
+        $roles = Role::all();
 
         $user->load('roles');
 
         return view('admin.users.edit', compact('roles', 'user'));
     }
 
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(Request $request, User $user)
     {
 
         $user->update($request->all());

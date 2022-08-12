@@ -1,9 +1,7 @@
 <?php
 
-// Route::group(['middleware' => 'auth'], function () {
-//   Route::get('/', 'TicketController@create');
-// });
 
+Route::get('/coco', 'TicketController@create')->name('ticket-create');
 
 // Route::get('/', function () {
 

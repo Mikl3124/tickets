@@ -4,14 +4,14 @@
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-12">
             <a class="btn btn-success" href="{{ route("admin.users.create") }}">
-                {{ trans('global.add') }} {{ trans('cruds.user.title_singular') }}
+                Ajouter un utilisteur
             </a>
         </div>
     </div>
 @endcan
 <div class="card">
     <div class="card-header">
-        {{ trans('cruds.user.title_singular') }} {{ trans('global.list') }}
+        Liste des utilisateurs
     </div>
 
     <div class="card-body">
@@ -68,7 +68,20 @@
                             </td>
                             <td>
                                 @foreach($user->roles as $key => $item)
-                                    <span class="badge badge-info">{{ $item->title }}</span>
+                                    @switch($item->title)
+                                        @case('Admin')
+                                          <span class="badge badge-info">{{ $item->title }}</span>
+                                            @break
+                                        @case('Agent')
+                                          <span class="badge badge-success">{{ $item->title }}</span>
+                                            @break
+                                        @case('Client')
+                                          <span class="badge badge-warning">{{ $item->title }}</span>
+                                        @break
+                                      @default
+                                        <span class="badge badge-secondary">{{ $item->title }}</span>
+                                    @endswitch
+
                                 @endforeach
                             </td>
                             <td>
@@ -80,7 +93,7 @@
 
                                 @can('user_edit')
                                     <a class="btn btn-xs btn-info" href="{{ route('admin.users.edit', $user->id) }}">
-                                        {{ trans('global.edit') }}
+                                        Modifier
                                     </a>
                                 @endcan
 
@@ -110,7 +123,7 @@
     $(function () {
   let dtButtons = $.extend(true, [], $.fn.dataTable.defaults.buttons)
 @can('user_delete')
-  let deleteButtonTrans = '{{ trans('global.datatables.delete') }}'
+  let deleteButtonTrans = 'Supprimer la sélection'
   let deleteButton = {
     text: deleteButtonTrans,
     url: "{{ route('admin.users.massDestroy') }}",
@@ -121,12 +134,12 @@
       });
 
       if (ids.length === 0) {
-        alert('{{ trans('global.datatables.zero_selected') }}')
+        alert('La sélection est vide, impossible de supprimer')
 
         return
       }
 
-      if (confirm('{{ trans('global.areYouSure') }}')) {
+      if (confirm('Etes-vous sûr de vouloir supprimer cette sélection?')) {
         $.ajax({
           headers: {'x-csrf-token': _token},
           method: 'POST',

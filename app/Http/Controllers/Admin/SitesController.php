@@ -9,14 +9,18 @@ use App\User;
 use App\Permission;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreRoleRequest;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateRoleRequest;
 use App\Http\Requests\MassDestroyRoleRequest;
 use Symfony\Component\HttpFoundation\Response;
+use App\Http\Controllers\Traits\MediaUploadingTrait;
 
 class SitesController extends Controller
 {
+  use MediaUploadingTrait;
+
   public function index()
   {
 
@@ -33,15 +37,19 @@ class SitesController extends Controller
 
       $users = User::all();
 
+
       return view('admin.sites.create', compact('users'));
   }
 
-  public function store(StoreUserRequest $request)
+  public function store(Request $request)
   {
 
     $site = Site::create($request->all());
-    
     $site->users()->sync($request->input('users', []));
+
+    foreach ($request->input('attachments', []) as $file) {
+      $site->addMedia(storage_path('tmp/uploads/' . $file))->toMediaCollection('attachments');
+  }
 
     return redirect()->route('admin.sites.index');
   }
@@ -61,4 +69,26 @@ class SitesController extends Controller
 
     return response(null, Response::HTTP_NO_CONTENT);
   }
+
+  public function edit(Site $site)
+  {
+      abort_if(Gate::denies('site_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+      $users = User::all()->sortBy('firstname');
+
+      $site->load('users');
+
+      return view('admin.sites.edit', compact('users', 'site'));
+  }
+
+  public function update(Request $request, Site $site)
+  {
+      $site->update($request->all());
+      $site->users()->sync($request->input('users', []));
+      $site->updated_by = Auth::user()->id;
+      $site->save();
+
+      return redirect()->route('admin.sites.index');
+  }
+
 }

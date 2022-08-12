@@ -54,7 +54,7 @@
                                     {{ trans('cruds.ticket.fields.author_name') }}
                                 </th>
                                 <td>
-                                    {{ $ticket->author_name }}
+                                    {{ $ticket->author->firstname }} {{ $ticket->author->lastname }}
                                 </td>
                             </tr>
                             <tr>
@@ -62,7 +62,7 @@
                                     {{ trans('cruds.ticket.fields.author_email') }}
                                 </th>
                                 <td>
-                                    {{ $ticket->author_email }}
+                                  {{ $ticket->author->email }}
                                 </td>
                             </tr>
                             <tr>
@@ -73,7 +73,7 @@
                                     @forelse ($ticket->comments as $comment)
                                         <div class="row">
                                             <div class="col">
-                                                <p class="font-weight-bold"><a href="mailto:{{ $comment->author_email }}">{{ $comment->author_name }}</a> ({{ $comment->created_at }})</p>
+                                                <p class="font-weight-bold"><a href="mailto:{{ $comment->author_email }}">{{ $comment->author_name }} coco</a> ({{ $comment->created_at }})</p>
                                                 <p>{{ $comment->comment_text }}</p>
                                             </div>
                                         </div>
@@ -83,7 +83,7 @@
                                     @empty
                                         <div class="row">
                                             <div class="col">
-                                                <p>There are no comments.</p>
+                                                <p>Il n'y a aucun commentaire</p>
                                             </div>
                                         </div>
                                     @endforelse

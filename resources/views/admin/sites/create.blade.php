@@ -5,10 +5,10 @@
     <div class="card-header">
         Création d'un nouveau site
     </div>
-
     <div class="card-body">
         <form action="{{ route("admin.sites.store") }}" method="POST" enctype="multipart/form-data">
             @csrf
+            <input type="hidden" name="updated_by" value="{{ Auth::user()->id }}">
             <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
                 <label for="name">Nom du site *</label>
                 <input type="text" id="name" name="name" class="form-control" value="{{ old('name', isset($site) ? $site->name : '') }}" required>
@@ -46,22 +46,46 @@
                 <p class="helper-block">
                 </p>
             </div>
-            <div class="form-group {{ $errors->has('users') ? 'has-error' : '' }}">
-                <label for="roles">Utilisateurs liés</label>
-                <select name="users[]" id="users" class="form-control select2" multiple="multiple">
-                    @foreach($users as $user)
-                        <option value="{{ $user->id }}" {{ (in_array($user->id, old('users', [])) || isset($user) && $user->sites->contains($user->id)) ? 'selected' : '' }}>{{ $user->lastname }} {{ $user->firstname }} </option>
-                    @endforeach
-                </select>
-                @if($errors->has('sites'))
-                    <em class="invalid-feedback">
-                        {{ $errors->first('sites') }}
-                    </em>
-                @endif
-                <p class="helper-block">
-                    
-                </p>
+
+            <div class="card">
+              <div class="card-header text-center">
+                <h3>Contacts</h3>
+              </div>
+              <div class="card-body">
+                <div class="form-row">
+                  <div class="form-group col-md-8{{ $errors->has('users') ? 'has-error' : '' }}">
+                    <label for="users"><i class="fa fa-users" aria-hidden="true"></i> Contacts liés</label>
+                    <select name="users[]" id="users" class="form-control select2" multiple="multiple">
+                      @foreach($users as $user)
+                        <option value="{{ $user->id }}" {{ (in_array($user->id, old('users', []))) ? 'selected' : '' }}> {{ $user->firstname }} {{ $user->lastname }}</option>
+                      @endforeach
+                    </select>
+                    @if($errors->has('users'))
+                      <em class="invalid-feedback">
+                          {{ $errors->first('users') }}
+                      </em>
+                    @endif
+                    <p class="helper-block"></p>
+                  </div>
+                  <div class="form-group col-md-4{{ $errors->has('contact') ? 'has-error' : '' }}">
+                    <label for="contact"><i class="fa fa-user" aria-hidden="true"></i> Contact Principal</label>
+                    <select name="contact_id" id="contact" class="form-control">
+                      @foreach($users as $user)
+                        {{-- <option  value="{{ $user->id }}" {{ (old('contact_id') || isset($user) && $site->user_id ===$user->id) ? 'selected' : '' }}>{{ $user->firstname }} {{ $user->lastname }}</option> --}}
+                        <option value="{{ $user->id }}">{{ $user->firstname }} {{ $user->lastname }}</option>
+                      @endforeach
+                    </select>
+                    @if($errors->has('contact'))
+                        <em class="invalid-feedback">
+                            {{ $errors->first('contact') }}
+                        </em>
+                    @endif
+                    <p class="helper-block"></p>
+                  </div>
+                </div>
+              </div>
             </div>
+
             <div class="form-group {{ $errors->has('attachments') ? 'has-error' : '' }}">
                 <label for="attachments">Logo</label>
                 <div class="needsclick dropzone" id="attachments-dropzone">

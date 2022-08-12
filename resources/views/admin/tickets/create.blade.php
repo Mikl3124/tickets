@@ -3,7 +3,7 @@
 
 <div class="card">
     <div class="card-header">
-        {{ trans('global.create') }} {{ trans('cruds.ticket.title_singular') }}
+      Créer un ticket
     </div>
 
     <div class="card-body">

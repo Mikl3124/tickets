@@ -22,18 +22,6 @@
                     </em>
                 @endif
             </div>
-            <div class="form-group {{ $errors->has('author_name') ? 'has-error' : '' }}">
-                <label for="author_name">Nom du rédacteur *</label>
-                <input type="text" id="author_name" name="author_name" class="form-control" value="{{ old('author_name', isset($comment) ? $comment->author_name : '') }}" required>
-                @if($errors->has('author_name'))
-                    <em class="invalid-feedback">
-                        {{ $errors->first('author_name') }}
-                    </em>
-                @endif
-                <p class="helper-block">
-
-                </p>
-            </div>
             <div class="form-group {{ $errors->has('author_email') ? 'has-error' : '' }}">
                 <label for="author_email">Email du rédacteur *</label>
                 <input type="text" id="author_email" name="author_email" class="form-control" value="{{ old('author_email', isset($comment) ? $comment->author_email : '') }}" required>
@@ -49,8 +37,8 @@
             <div class="form-group {{ $errors->has('user_id') ? 'has-error' : '' }}">
                 <label for="user">Utilisateur</label>
                 <select name="user_id" id="user" class="form-control select2">
-                    @foreach($users as $id => $user)
-                        <option value="{{ $id }}" {{ (isset($comment) && $comment->user ? $comment->user->id : old('user_id')) == $id ? 'selected' : '' }}>{{ $user }}</option>
+                    @foreach($users as $user)
+                        <option value="{{ $user->id }}" {{ (isset($comment) && $comment->user ? $comment->user->id : old('user_id')) == $id ? 'selected' : '' }}>{{ $user->firstname }}</option>
                     @endforeach
                 </select>
                 @if($errors->has('user_id'))

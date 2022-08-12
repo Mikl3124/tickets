@@ -33,10 +33,10 @@
                           Contact
                         </th>
                         <th>
-                          Contact
+                          Dernière MAJ
                         </th>
                         <th>
-                          Contact
+                          Temps restant
                         </th>
                         <th>
                           Type
@@ -59,10 +59,15 @@
                                 <a href="{{ $site->url }}">{{ $site->url }}</a>
                             </td>
                             <td>
-                              Colonne 3
+                              @if (isset($site->contact_id))
+                              <a href="{{route('admin.users.show', $site->contact_id ) }}">{{ $site->contact->firstname }} {{ $site->contact->lastname }}</a>
+                              @else
+
+                              @endif
+
                           </td>
                             <td>
-                                Colonne 4
+                              {{ \Carbon\Carbon::parse($site->updated_at)->diffForHumans() }} <br> <small>Par: {{ $site->userUpdate->firstname}}</small>
                             </td>
                             <td>
                                 Colonne 5
@@ -159,4 +164,5 @@
 })
 
 </script>
+
 @endsection

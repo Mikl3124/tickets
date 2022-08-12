@@ -11,9 +11,7 @@ class CreateCommentsTable extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string('author_name')->nullable();
-
-            $table->string('author_email')->nullable();
+            $table->unsignedInteger('author_id')->index()->references('id')->on('users');
 
             $table->longText('comment_text');
 

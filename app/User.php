@@ -15,9 +15,35 @@ class User extends Authenticatable
 {
     use SoftDeletes, Notifiable, HasApiTokens;
 
+
     public $table = 'users';
 
-    protected $guarded = [];
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    protected $dates = [
+        'updated_at',
+        'created_at',
+        'deleted_at',
+        'email_verified_at',
+    ];
+
+    protected $fillable = [
+        'firstname',
+        'lastname',
+        'updated_by',
+        'phone',
+        'email',
+        'password',
+        'comments',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        'remember_token',
+        'email_verified_at',
+    ];
 
     public function tickets()
     {
@@ -73,8 +99,18 @@ class User extends Authenticatable
 
     public function sites()
     {
-        return $this->belongsToMany(Site::class);
+      return $this->belongsToMany(Site::class);
+
     }
 
+    public function getAttachmentsAttribute()
+    {
+        return $this->getMedia('attachments');
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')->width(50)->height(50);
+    }
 
 }

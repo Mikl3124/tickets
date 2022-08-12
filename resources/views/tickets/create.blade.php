@@ -10,46 +10,14 @@
                 </div>
             @endif
             <div class="card">
-                <div class="card-header">Add ticket</div>
-
+                <div class="card-header">Ajouter un ticket</div>
                 <div class="card-body">
                     <form method="POST" action="{{ route('tickets.store') }}" enctype="multipart/form-data">
                         @csrf
-
                         <div class="form-group row">
-                            <label for="author_name" class="col-md-4 col-form-label text-md-right">Your Name</label>
-
-                            <div class="col-md-6">
-                                <input id="author_name" type="text" class="form-control @error('author_name') is-invalid @enderror" name="author_name" value="{{ old('author_name') }}" required autocomplete="name" autofocus>
-
-                                @error('author_name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="author_email" class="col-md-4 col-form-label text-md-right">Your Email</label>
-
-                            <div class="col-md-6">
-                                <input id="author_email" type="email" class="form-control @error('author_email') is-invalid @enderror" name="author_email" value="{{ old('author_email') }}" required autocomplete="email">
-
-                                @error('author_email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="title" class="col-md-4 col-form-label text-md-right">@lang('cruds.ticket.fields.title')</label>
-
+                            <label for="title" class="col-md-4 col-form-label text-md-right">Titre</label>
                             <div class="col-md-6">
                                 <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title') }}" required autocomplete="title">
-
                                 @error('title')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -59,24 +27,44 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="content" class="col-md-4 col-form-label text-md-right">@lang('cruds.ticket.fields.content')</label>
-
-                            <div class="col-md-6">
-                                <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content" rows="3" required>{{ old('content') }}</textarea>
-                                @error('content')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
+                          <label for="attachments" class="col-md-4 col-form-label text-md-right">Catégorie</label>
+                          <div class="form-group col-md-6">
+                            <select name="category_id" class="form-control">
+                              @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                              @endforeach
+                            </select>
+                          </div>
                         </div>
 
                         <div class="form-group row">
-                            <label for="attachments" class="col-md-4 col-form-label text-md-right">{{ trans('cruds.ticket.fields.attachments') }}</label>
+                          <label for="attachments" class="col-md-4 col-form-label text-md-right">Site</label>
+                          <div class="form-group col-md-6">
+                            <select name='site_id' class="form-control">
+                              @foreach ($user->sites as $site)
+                                <option value="{{ $site->id }}">{{ $site->name }}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                        </div>
 
+                        <div class="form-group row">
+                          <label for="content" class="col-md-4 col-form-label text-md-right">@lang('cruds.ticket.fields.content')</label>
+                          <div class="col-md-6">
+                              <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content" rows="3" required>{{ old('content') }}</textarea>
+                              @error('content')
+                                  <span class="invalid-feedback" role="alert">
+                                      <strong>{{ $message }}</strong>
+                                  </span>
+                              @enderror
+                          </div>
+                      </div>
+
+                        <div class="form-group row">
+                            <label for="attachments" class="col-md-4 col-form-label text-md-right">{{ trans('cruds.ticket.fields.attachments') }}</label>
                             <div class="col-md-6">
                                 <div class="needsclick dropzone @error('attachments') is-invalid @enderror" id="attachments-dropzone">
-                
+                                  <div class="dz-message" data-dz-message><span>Glissez vos documents ici</span></div>
                                 </div>
                             </div>
                             @error('attachments')
@@ -99,6 +87,7 @@
         </div>
     </div>
 </div>
+
 @endsection
 
 @section('scripts')
