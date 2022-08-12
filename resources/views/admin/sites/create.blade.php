@@ -9,31 +9,32 @@
         <form action="{{ route("admin.sites.store") }}" method="POST" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="updated_by" value="{{ Auth::user()->id }}">
-            <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
-                <label for="name">Nom du site *</label>
-                <input type="text" id="name" name="name" class="form-control" value="{{ old('name', isset($site) ? $site->name : '') }}" required>
-                @if($errors->has('name'))
+            <div class="form-row">
+              <div class="form-group col-md-5 {{ $errors->has('name') ? 'has-error' : '' }}">
+                  <label for="name">Nom du site *</label>
+                  <input type="text" id="name" name="name" class="form-control" value="{{ old('name', isset($site) ? $site->name : '') }}" required>
+                  @if($errors->has('name'))
+                      <em class="invalid-feedback">
+                          {{ $errors->first('name') }}
+                      </em>
+                  @endif
+                  <p class="helper-block">
+                  </p>
+              </div>
+              <div class="form-group  col-md-5{{ $errors->has('url') ? 'has-error' : '' }}">
+                <label for="url">URL</label>
+                <input type="url" id="url" name="url" class="form-control" value="{{ old('url', isset($site) ? $site->url : '') }}">
+                @if($errors->has('url'))
                     <em class="invalid-feedback">
-                        {{ $errors->first('name') }}
+                        {{ $errors->first('url') }}
                     </em>
                 @endif
                 <p class="helper-block">
                 </p>
-            </div>
-            <div class="form-group {{ $errors->has('url') ? 'has-error' : '' }}">
-              <label for="url">URL</label>
-              <input type="url" id="url" name="url" class="form-control" value="{{ old('url', isset($site) ? $site->url : '') }}">
-              @if($errors->has('url'))
-                  <em class="invalid-feedback">
-                      {{ $errors->first('url') }}
-                  </em>
-              @endif
-              <p class="helper-block">
-              </p>
-            </div>
-            <div class="form-group {{ $errors->has('type') ? 'has-error' : '' }}">
+              </div>
+              <div class="form-group col-md-2 {{ $errors->has('type') ? 'has-error' : '' }}">
                 <label for="type">Type de site</label>
-                <select name="type" id="type" class="form-control select2">
+                <select name="type" id="type" class="form-control">
                     <option value="vitrine">Vitrine</option>
                     <option value="commerce">E-commerce</option>
                     <option value="autre">Autre</option>
@@ -45,6 +46,7 @@
                 @endif
                 <p class="helper-block">
                 </p>
+            </div>
             </div>
 
             <div class="card">
@@ -71,7 +73,6 @@
                     <label for="contact"><i class="fa fa-user" aria-hidden="true"></i> Contact Principal</label>
                     <select name="contact_id" id="contact" class="form-control">
                       @foreach($users as $user)
-                        {{-- <option  value="{{ $user->id }}" {{ (old('contact_id') || isset($user) && $site->user_id ===$user->id) ? 'selected' : '' }}>{{ $user->firstname }} {{ $user->lastname }}</option> --}}
                         <option value="{{ $user->id }}">{{ $user->firstname }} {{ $user->lastname }}</option>
                       @endforeach
                     </select>
