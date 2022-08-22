@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Keyword;
 use Spatie\MediaLibrary\HasMedia;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -26,6 +27,10 @@ class Site extends Model implements HasMedia
       'created_at',
       'delivery_date',
   ];
+
+    protected $casts = [
+        'keywords' => 'array'
+    ];
 
   protected $fillable = [
       'name',
@@ -56,4 +61,8 @@ class Site extends Model implements HasMedia
         return $this->belongsTo(User::class, 'updated_by');
     }
 
+    public function keywords()
+    {
+        return $this->hasMany(Keyword::class, 'site_id');
+    }
 }

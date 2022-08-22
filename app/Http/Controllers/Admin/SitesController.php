@@ -6,6 +6,7 @@ use Gate;
 use App\Role;
 use App\Site;
 use App\User;
+use App\Keyword;
 use App\Permission;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -78,11 +79,14 @@ class SitesController extends Controller
 
       $site->load('users');
 
-      return view('admin.sites.edit', compact('users', 'site'));
+      $keywords= Keyword::where('site_id', $site->id)->get();
+
+      return view('admin.sites.edit', compact('users', 'site', 'keywords'));
   }
 
   public function update(Request $request, Site $site)
   {
+
       $site->update($request->all());
       $site->users()->sync($request->input('users', []));
       $site->updated_by = Auth::user()->id;

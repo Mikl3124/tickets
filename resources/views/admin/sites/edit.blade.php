@@ -97,18 +97,26 @@
                 <h3>SEO</h3>
               </div>
               <div class="card-body">
-                <div class="form-row">
-                  <div class="form-group">
-                    <!-- Button trigger keywordsmodal -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                      Ajouter un mot clé
-                    </button>
-                  </div>
+                <!-- Button trigger keywordsmodal -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                  Ajouter un mot clé
+                </button>
+                <div>
+                  @foreach ($keywords as $keyword)
+                    <hr>
+                    <div class="m-2 d-flex justify-content-between">
+                      <h5>{{ $keyword->title }}</h5>
+                      <form action="{{ route('admin.keywords.destroy', $keyword->id) }}" method="POST" onsubmit="return confirm('Etes vous sûr de vouloir supprimer ce mot clé?');" style="display: inline-block;">
+                          <input type="hidden" name="_method" value="DELETE">
+                          <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                          <input type="submit" class="btn btn-xs btn-danger" value="Effacer">
+                       </form>
+                    </div>
+
+                  @endforeach
                 </div>
               </div>
             </div>
-
-
             <div>
                 <input class="btn btn-danger" type="submit" value="{{ trans('global.save') }}">
             </div>
@@ -123,18 +131,25 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" >Saisir un mot clé</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        ...
+         <form action="{{ route("admin.keywords.store", [$site->id]) }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('POST')
+            <div class="form-group">
+              <input type="hidden" name="site_id" value="{{ $site->id }}">
+              <input type="text" id="keyword" name="title" class="form-control" value="{{ old('title', isset($site) ? $site->keywords : '') }}" required>
+            </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
       </div>
+      <form>
     </div>
   </div>
 </div>

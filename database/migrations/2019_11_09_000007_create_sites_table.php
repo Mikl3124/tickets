@@ -26,7 +26,6 @@ class CreateSitesTable extends Migration
           $table->string('logo')->nullable();
           $table->unsignedInteger('contact_id')->index()->references('id')->on('users')->nullable();
           $table->longText('description')->nullable();
-          $table->json('keywords')->nullable();
           $table->float('ticket_time')->nullable();
           $table->softDeletes();
         });
